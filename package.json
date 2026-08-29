@@ -1,0 +1,25 @@
+{
+  "name": "smart-farming-assistant",
+  "version": "1.0.0",
+  "description": "Smart Farming Assistant - Hackathon Project for Crop Disease Detection, Weather Sync, Smart Irrigation, Soil Health & Telugu/English i18n",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "agriculture",
+    "smart-farming",
+    "disease-detection",
+    "irrigation-calculator",
+    "soil-health",
+    "telugu-i18n"
+  ],
+  "author": "Antigravity Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}
