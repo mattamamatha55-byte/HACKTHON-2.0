@@ -620,6 +620,15 @@ async function handleSoilSubmit(evt) {
   const dapBags  = Math.max(0.4, (Math.max(0, 30 - P_num) * 0.8 / 50) + 0.6).toFixed(1);
   const potBags  = Math.max(0.3, (Math.max(0, 200 - K_num) * 0.5 / 50) + 0.4).toFixed(1);
 
+  // Calculate Govt Subsidy Economics (INR)
+  const subCost = Math.round(parseFloat(ureaBags) * 266.50 + parseFloat(dapBags) * 1350 + parseFloat(potBags) * 1700);
+  const mktCost = Math.round(parseFloat(ureaBags) * 2450.00 + parseFloat(dapBags) * 3800 + parseFloat(potBags) * 3100);
+  const savings = mktCost - subCost;
+
+  safeSetText('subsidizedPriceVal', `₹${subCost.toLocaleString('en-IN')} / acre`);
+  safeSetText('marketPriceVal', `₹${mktCost.toLocaleString('en-IN')}`);
+  safeSetText('subsidySavedVal', `₹${savings.toLocaleString('en-IN')} / acre 💰`);
+
   const bagsContainer = document.getElementById('fertBagsVisualContainer');
   if (bagsContainer) {
     bagsContainer.innerHTML = `
@@ -2062,6 +2071,35 @@ function closeEmergencyModal() {
   const modal = document.getElementById('emergencyModal');
   if (modal) modal.style.display = 'none';
 }
+
+/* =============================================
+   PWA APP INSTALLATION CONTROLLER
+   ============================================= */
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner = document.getElementById('pwaInstallBanner');
+  if (banner) banner.style.display = 'flex';
+});
+
+function triggerPWAInstall() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        showToast("🌾 RaaituSeva installed successfully on your device!", "success");
+      }
+      deferredPrompt = null;
+      const banner = document.getElementById('pwaInstallBanner');
+      if (banner) banner.style.display = 'none';
+    });
+  } else {
+    showToast("📲 To install: Tap your browser's (⋮) menu and select 'Add to Home Screen'!", "info");
+  }
+}
+
 
 
 
